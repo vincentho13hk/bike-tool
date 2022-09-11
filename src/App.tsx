@@ -21,7 +21,7 @@ function addMarkers(lonLatArray: Coordinate[]) {
     image: new Icon({
       anchorXUnits: "fraction",
       anchorYUnits: "pixels",
-      src: mapConfig.markerImage32,
+      src: "https://localhost:3000/src/assets/icons/Group 1.png",
     }),
   });
   let features = lonLatArray.map((item) => {
