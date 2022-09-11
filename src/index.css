@@ -1,0 +1,8 @@
+body {
+    background-color: rgb(38, 29, 75);
+    color: white;
+    display: flex;
+    height: 100vh;
+    margin: 0;
+    justify-content: center;
+}
