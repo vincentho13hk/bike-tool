@@ -22,9 +22,7 @@ function Report() {
                 </Link>
             </div>
             <Chip icon={<LocationOn />} variant='outlined' label='~ 18 York road' sx={{
-                margin: '2rem',
-                color: 'white',
-                borderColor: 'gray'
+                margin: '2rem'
             }} />
         </div>
     )
