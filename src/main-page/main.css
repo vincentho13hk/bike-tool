@@ -2,16 +2,15 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-
 }
 
-.Button-container {
-    padding-top: 25vh;
-    justify-content: space-evenly;
+.App-header {
     display: flex;
-    align-items: flex-end;
+    justify-content: flex-end;
+    padding: 2rem;
 }
 
-button {
-    padding:10%;
+.Bike-big {
+    width: 60%;
+    align-self: center;
 }
