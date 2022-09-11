@@ -6,9 +6,13 @@ import "./Map.css";
 import "ol/ol.css";
 import { Coordinate, createStringXY } from "ol/coordinate";
 import { defaults as defaultControls } from 'ol/control';
-import {altKeyOnly, click, pointerMove} from 'ol/events/condition';
+import { altKeyOnly, click, pointerMove } from 'ol/events/condition';
 import Interaction from 'ol/interaction/Interaction';
 import Select from 'ol/interaction/Select';
+import VectorSource from "ol/source/Vector";
+import Draw from 'ol/interaction/Draw';
+import VectorLayer from "ol/layer/Vector";
+import { Fill, Stroke, Style } from "ol/style";
 
 interface IProps {
     zoom: number
@@ -28,6 +32,7 @@ const mousePositionControl = new MousePosition({
 const Map: React.FC<IProps> = ({ zoom, center, children }) => {
     const mapRef = useRef<HTMLDivElement>(null);
     const [map, setMap] = useState<ol.Map>(new ol.Map());
+    const source = new VectorSource();
 
     // on component mount
     useEffect(() => {
@@ -42,7 +47,30 @@ const Map: React.FC<IProps> = ({ zoom, center, children }) => {
         if (mapRef.current) {
             mapObject.setTarget(mapRef.current);
             setMap(mapObject);
+            map.addInteraction(
+                new Draw({
+                    source: source,
+                    type: 'LineString',
+                })
+
+            );
+
+            const vector = new VectorLayer({
+                source: source,
+                style: new Style({
+                    fill: new Fill({
+                        color: '9999CC'
+                    }),
+                    stroke: new Stroke({
+                        color: '#ddd',
+                        width: 3
+                    })
+                }),
+            });
+
+            map.addLayer(vector);
         }
+
         return () => mapObject.setTarget(undefined);
     }, []);
 
@@ -79,7 +107,7 @@ const Map: React.FC<IProps> = ({ zoom, center, children }) => {
 
     return (
         <MapContext.Provider value={{ map }}>
-        <div id="mouse-position"></div>
+            <div id="mouse-position"></div>
             <div ref={mapRef} className="ol-map">
                 {children}
             </div>

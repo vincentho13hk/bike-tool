@@ -14,14 +14,15 @@ import { Point } from 'ol/geom';
 
 const geojsonObject = mapConfig.geojsonObject;
 
-const markersLonLat = [[-79.3470, 43.6509], mapConfig.blueSpringsLonLat];
+const waterMarkersLonLat = [[-79.3252, 43.6522], [-79.4411, 43.6363]];
+const washroomMarkersLonLat = [[-79.3470, 43.6509], [-79.4024, 43.6379]];
 
-function addMarkers(lonLatArray: Coordinate[]) {
+function addMarkers(lonLatArray: Coordinate[], png: string) {
   var iconStyle = new Style({
     image: new Icon({
       anchorXUnits: "fraction",
       anchorYUnits: "pixels",
-      src: "https://localhost:3000/src/assets/icons/Group 1.png",
+      src: png,
     }),
   });
   let features = lonLatArray.map((item) => {
@@ -38,17 +39,12 @@ function App() {
   const [center, setCenter] = useState<Coordinate>(mapConfig.center);
   const [zoom, setZoom] = useState<number>(12.5);
 
-  const [features, setFeatures] = useState(addMarkers(markersLonLat));
+  const waterFeatures = addMarkers(waterMarkersLonLat, "https://nusethmi.sirv.com/Images/Group%201.png");
+  const washroomFeatures = addMarkers(washroomMarkersLonLat, "https://nusethmi.sirv.com/Images/Group%204.png")
   const {map} = useContext(MapContext);
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-      </header>
-      <div>
+    <div className="">
       <Map center={fromLonLat(center)} zoom={zoom}>
         <Layers>
           <TileLayer source={osm()} zIndex={0} />
@@ -60,13 +56,10 @@ function App() {
               })}
               style={FeatureStyles.MultiPolygon}
             />
-          <VectorLayer source={vector({ features })} />  
+          <VectorLayer source={vector({ features: waterFeatures })} />  
+          <VectorLayer source={vector({ features: washroomFeatures })} /> 
         </Layers>
         </Map>
-      </div>
-      <div>
-        zoom: {map.getView().getZoom()}
-      </div>
       {/* <div>
         <input
           type="checkbox"
